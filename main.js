@@ -2,6 +2,24 @@ const socket = io('https://luatstream3005.herokuapp.com/');
 
 $('#div-chat').hide();
 
+let customConfig;
+$.ajax({
+    url: 'https://services.xirsys.com/ice',
+    data: {
+        ident: "luatnguyen-hcmus",
+        secret: "6fcc3dda-bcaf-11e8-ad83-9bd7a8978fa0",
+        domain: 'luatnguyen-hcmus.github.io',
+        application: 'default',
+        room: 'default',
+        secure: 1
+    },
+    success: function (data, status){
+        customConfig = data.id,
+        console.log(customConfig)
+    },
+    async: false
+})
+
 socket.on('DANH_SACH_ONLINE', arrUserInfo => {
     
     $('#div-chat').show();
@@ -37,7 +55,8 @@ const peer = new Peer({
     key: 'peerjs',
     host: 'luatpeer3005.herokuapp.com',
     secure: true,
-    port: 443
+    port: 443,
+    config: customConfig
 });
 
 peer.on('open', function(id) {
